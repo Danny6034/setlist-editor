@@ -10,7 +10,7 @@
         <v-container class="my-5" v-if="this.playlists !== null">
             <v-layout row wrap>
                 <v-flex xs12 sm6 md4 lg3 v-for="playlist in playlists.items" :key="playlist.name">
-                    <v-card @click="openCard()" theme="dark" variant="elevated" width=330px height=180px class="playlistcard text-xs-center ma-3" hover> 
+                    <v-card @click="openCard(playlist)" theme="dark" variant="elevated" width=330px class="playlistcard text-xs-center ma-3" hover> 
                         <v-row>
                             <v-col cols="5">
                         <v-responsive class="pt-4">
@@ -36,6 +36,13 @@
                                 <span> Create Setlist </span>
                             </v-btn>
                         </v-card-actions>
+                        <v-expand-transition>
+                        <div v-show="expandedCard === playlist.name">
+                            <v-card-text>
+          I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+                            </v-card-text>
+                        </div>
+                        </v-expand-transition>
                     </v-card>
                 </v-flex>
             </v-layout>
@@ -49,7 +56,9 @@
 export default {
     data() {
     return {
-      playlists: null
+      playlists: null,
+      show:false,
+      expandedCard:0
     };
   },
   mounted() {
@@ -68,11 +77,11 @@ export default {
     },
     createSetlist(playlist) {
 
-        console.log(playlist.name);
+        console.log(playlist);
         
     },
-    openCard(){
-
+    openCard(playlist){
+        this.expandedCard = playlist.name;
     }
   }
 

@@ -1,0 +1,22 @@
+{
+  "name": "setlist-creator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "dotenv": "^16.3.1",
+    "vue": "^3.2.13",
+    "vuetify": "^3.4.9",
+    "yarn": "^1.22.21"
+  },
+  "devDependencies": {
+    "@mdi/font": "^7.4.47",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "vue-cli-plugin-vuetify": "~2.5.8"
+  }
+}

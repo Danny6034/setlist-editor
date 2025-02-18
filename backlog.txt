@@ -1,0 +1,8 @@
+
+-- Finish OAuth + Spotify API Calls
+
+--Move API calls and related functions to separate .js file
+
+--shorten playlist description
+
+--save user and playlist information in localstorage and then retrieve with python

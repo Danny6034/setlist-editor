@@ -1,6 +1,7 @@
 <template>
 <div class="menu">
     <v-btn class="custom-button"  @click="refreshPlaylists()"> Get Playlists </v-btn>
+    <v-btn class="custom-button"  @click="refreshTracks()"> Get Tracks </v-btn>
 </div>
 </template>
 
@@ -12,6 +13,9 @@ export default {
     refreshPlaylists() {
         auth.refreshPlaylists();
     },
+    refreshTracks(){
+      auth.refreshTracks();
+    }
   }
 }
 </script>

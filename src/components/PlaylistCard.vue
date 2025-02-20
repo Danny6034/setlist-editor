@@ -15,7 +15,7 @@
                             <v-col cols="5">
                         <v-responsive class="pt-4">
                             <v-avatar size="100" class="ml-4">
-                                <v-img src="../assets/djdeck-icon.png"></v-img>
+                                <v-img v-if="playlist.images && playlist.images[0]" :src="playlist.images[0].url"></v-img>
                             </v-avatar>
                         </v-responsive>
                             </v-col>
@@ -38,9 +38,15 @@
                         </v-card-actions>
                         <v-expand-transition>
                         <div v-show="expandedCard === playlist.name">
-                            <v-card-text>
-          I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                            </v-card-text>
+                            <v-list lines="one" class="playlistcard">
+                                <v-list-item
+                                v-if="tracks && tracks.items"
+                                v-for="(item, index) in tracksMap[playlist.id].items"
+                                :key="index"
+                                :title="`Track ${index + 1}`"
+                                :subtitle="item.track && item.track.name ? item.track.name : 'No track name available'"
+                            ></v-list-item>
+                            </v-list>
                         </div>
                         </v-expand-transition>
                     </v-card>
@@ -58,7 +64,9 @@ export default {
     return {
       playlists: null,
       show:false,
-      expandedCard:0
+      expandedCard:0,
+      tracks: { items: [] },
+      tracksMap: {}
     };
   },
   mounted() {
@@ -73,6 +81,19 @@ export default {
       // Update the playlists data if it's not null
       if (storedPlaylists) {
         this.playlists = JSON.parse(storedPlaylists);
+        this.preFetchTracks(); // Pre-fetch track data for each playlist
+      }
+    },
+    preFetchTracks() {
+      if (this.playlists && this.playlists.items) {
+        this.playlists.items.forEach(playlist => {
+          const storedTracks = localStorage.getItem(`tracks_${playlist.id}`);
+          if (storedTracks) {
+            this.tracksMap[playlist.id] = JSON.parse(storedTracks);
+          } else {
+            this.tracksMap[playlist.id] = { items: [{ track: { name: "No tracks available" } }] };
+          }
+        });
       }
     },
     createSetlist(playlist) {
@@ -80,7 +101,7 @@ export default {
         console.log(playlist);
         
     },
-    openCard(playlist){
+    openCard(playlist) {
         this.expandedCard = playlist.name;
     }
   }

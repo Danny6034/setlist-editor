@@ -7,11 +7,14 @@ var access_token = null;
 var refresh_token = null;
 
 var playlists = null;
+var trackData;
 
 const AUTHORIZE = 'https://accounts.spotify.com/authorize';
 const USER = 'https://api.spotify.com/v1/me';
 const TOKEN = 'https://accounts.spotify.com/api/token'
 const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
+var TRACKS = "https://api.spotify.com/v1/playlists/";
+var playlistName = "";
 
 
 export function requestOAuth() {
@@ -144,6 +147,36 @@ function handlePlaylistResponse() {
     }
 }
 
+export function refreshTracks() {
+    var playlists = JSON.parse(localStorage.getItem("playlists"));
+    var playlistList = playlists.items;
+
+    playlistList.forEach(element => {
+        let trackUrl = TRACKS + element.id + "/tracks";
+        callApi("GET", trackUrl, null, function() {
+            handleTracksResponse(this, element.id);
+        });
+    });
+}
+
+function handleTracksResponse(xhr, playlistId) {
+    if (xhr.status == 200) {
+        console.log("handling tracks response");
+        var data = JSON.parse(xhr.responseText);
+        console.log(data);
+        try{
+            localStorage.setItem(`tracks_${playlistId}`, JSON.stringify(data));
+        }
+        catch(err){
+            console.log(err);
+        }
+    } else if (xhr.status == 401) {
+        refreshAccessToken();
+    } else {
+        console.log(xhr.responseText);
+        alert(xhr.responseText);
+    }
+}
 
 
 function callApi(method, url, body, callback) {
